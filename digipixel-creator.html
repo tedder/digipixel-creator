@@ -93,9 +93,9 @@ function test_barrier(r, g, b) {
                     //y = Math.floor(i / (4 * this.height));
                     pixelBit = (this.height - y);
 
-                    if (pix[i] > 0) red[x] = enable_bit(red[x], pixelBit);
-                    if (pix[i + 1] > 0) green[x] = enable_bit(green[x], pixelBit);
-                    if (pix[i + 2] > 0) blue[x] = enable_bit(blue[x], pixelBit);
+                    if (pix[i] > 127) red[x] = enable_bit(red[x], pixelBit);
+                    if (pix[i + 1] > 127) green[x] = enable_bit(green[x], pixelBit);
+                    if (pix[i + 2] > 127) blue[x] = enable_bit(blue[x], pixelBit);
                     if (test_barrier(pix[i], pix[i + 1], pix[i + 2])) barrier[x] = enable_bit(barrier[x], pixelBit);
                 }
 
