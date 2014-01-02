@@ -50,9 +50,9 @@ function enable_bit(bitstring, bitnum) {
 
 // should we enable the barrier bit?
 function test_barrier(r, g, b) {
-    if (r > 0 && r <= 127) return 1;
-    if (g > 0 && g <= 127) return 1;
-    if (b > 0 && b <= 127) return 1;
+    if (r > 127 && r < 255) return 1; // we will count a pixel as being a barrier if it is just a bit darker than 255
+    if (g > 127 && g < 255) return 1;
+    if (b > 127 && b < 255) return 1;
 
 }
 
@@ -108,18 +108,18 @@ function test_barrier(r, g, b) {
                 if (height == 32) vartype = "long";
 
 
-                output += "byte " + varlabel + "Red[" + height + "]PROGMEM={\n  " + red.map(function (x) {
+                output += "byte " + varlabel + "Red[" + width + "]PROGMEM={\n  " + red.map(function (x) {
                     return "0b" + x;
                 }).join(",\n  ") + "};\n";
 
-                output += "byte " + varlabel + "Green[" + height + "]PROGMEM={\n  " + green.map(function (x) {
+                output += "byte " + varlabel + "Green[" + width + "]PROGMEM={\n  " + green.map(function (x) {
                     return "0b" + x;
                 }).join(",\n  ") + "};\n";
 
-                output += "byte " + varlabel + "Blue[" + height + "]PROGMEM={\n  " + blue.map(function (x) {
+                output += "byte " + varlabel + "Blue[" + width + "]PROGMEM={\n  " + blue.map(function (x) {
                     return "0b" + x;
                 }).join(",\n  ") + "};\n";
-                output += "byte " + varlabel + "Barrier[" + height + "]PROGMEM={\n  " + barrier.map(function (x) {
+                output += "byte " + varlabel + "Barrier[" + width + "]PROGMEM={\n  " + barrier.map(function (x) {
                     return "0b" + x;
                 }).join(",\n  ") + "};\n";
 
