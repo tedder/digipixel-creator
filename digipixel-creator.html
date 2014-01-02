@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>digipixel creator</title>
+  
+  <script type='text/javascript' src='//code.jquery.com/jquery-2.0.2.js'></script>
+  <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+  <style type='text/css'>
+  </style>
+  
+
+
+<script type='text/javascript'>//<![CDATA[ 
+$(window).load(function(){
+function padding_left(string_to_pad, pad_char, pad_num) {
+    if (!string_to_pad || !pad_char || string_to_pad.length >= pad_num) {
+        return string_to_pad;
+    }
+
+    var max = (pad_num - string_to_pad.length) / pad_char.length;
+    for (var i = 0; i < max; i++) {
+        string_to_pad = pad_char + string_to_pad;
+    }
+
+    return string_to_pad;
+}
+
+// create the 0b0011001100 binary format, zero-padded.
+function embinerate(num, width) {
+    console.log("===", num);
+    return "0b" + padding_left(num.toString(2), "0", width);
+}
+
+function prepend_zero_b(x) {
+    return "0b" + x;
+}
+
+function enable_bit(bitstring, bitnum) {
+    // so the 0th bit is the LAST bit, not the first.
+    // backward math.
+    chars = bitstring.split('');
+    target = chars.length - bitnum;
+
+    chars[target] = "1";
+    //if (debug && chars.length > 32) console.log("target:", target, "charlen", chars.length, "bitnum", bitnum);
+    return chars.join('');
+}
+
+// should we enable the barrier bit?
+function test_barrier(r, g, b) {
+    if (r > 0 && r <= 127) return 1;
+    if (g > 0 && g <= 127) return 1;
+    if (b > 0 && b <= 127) return 1;
+
+}
+
+// main function, containing everything I didn't properly section off. What a horrible pile of code. What do I even call it? Foo. Yeah.
+    function run_foo() {
+        var fr = new FileReader();
+        fr.onload = function () {
+            var img = new Image();
+            img.src = fr.result;
+
+            var c = document.getElementById("cvs");
+            var ctx = c.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+
+            img.onload = function () {
+                var imgd = ctx.getImageData(0, 0, this.width, this.height);
+                pix = imgd.data;
+                var red = new Array(this.width);
+                var green = new Array(this.width);
+                var blue = new Array(this.width);
+                var barrier = new Array(this.width);
+
+                for (var j = this.width - 1; j >= 0; --j) {
+                    red[j] = Array(this.height + 1).join("0");
+                    green[j] = Array(this.height + 1).join("0");
+                    blue[j] = Array(this.height + 1).join("0");
+                    barrier[j] = Array(this.height + 1).join("0");
+
+                }
+
+                for (var i = 0, n = pix.length; i < n; i += 4) {
+                    // i + 4 is the alpha channel.
+                    // I consistently got the x/y calculation wrong. Here's where I found the Correct Way to do it.
+                    // http://stackoverflow.com/a/20445915/659298
+                    var x = (i / 4) % this.width;
+                    var y = Math.floor((i / 4) / this.width);
+                    //x = (i / 4) % this.width;
+                    //y = Math.floor(i / (4 * this.height));
+                    pixelBit = (this.height - y);
+
+                    if (pix[i] > 0) red[x] = enable_bit(red[x], pixelBit);
+                    if (pix[i + 1] > 0) green[x] = enable_bit(green[x], pixelBit);
+                    if (pix[i + 2] > 0) blue[x] = enable_bit(blue[x], pixelBit);
+                    if (test_barrier(pix[i], pix[i + 1], pix[i + 2])) barrier[x] = enable_bit(barrier[x], pixelBit);
+                }
+
+                var output = "";
+                var vartype = "byte";
+                var varlabel = document.getElementsByName("label_name")[0].value;
+
+                height = this.height;
+                if (height == 16) vartype = "word";
+                if (height == 32) vartype = "long";
+
+
+                output += "byte " + varlabel + "Red[" + height + "]PROGMEM={\n  " + red.map(function (x) {
+                    return "0b" + x;
+                }).join(",\n  ") + "};\n";
+
+                output += "byte " + varlabel + "Green[" + height + "]PROGMEM={\n  " + green.map(function (x) {
+                    return "0b" + x;
+                }).join(",\n  ") + "};\n";
+
+                output += "byte " + varlabel + "Blue[" + height + "]PROGMEM={\n  " + blue.map(function (x) {
+                    return "0b" + x;
+                }).join(",\n  ") + "};\n";
+                output += "byte " + varlabel + "Barrier[" + height + "]PROGMEM={\n  " + barrier.map(function (x) {
+                    return "0b" + x;
+                }).join(",\n  ") + "};\n";
+
+                $('#res').text(output);
+            };
+        };
+
+        fr.readAsDataURL(this.files[0]);
+    }
+
+$('input').change(run_foo);
+});//]]>  
+
+</script>
+
+
+</head>
+<body>
+<p>Bitmap creator for Brad's Digipixel Kickstarter project by Tedder; see <a href="http://www.bradsprojects.com/the-digipixel/">www.bradsprojects.com/the-digipixel/</a> and <a href="http://www.kickstarter.com/projects/1897710270/digipixel-an-led-game-shield-for-your-arduino-or-d">www.kickstarter.com/projects/1897710270/digipixel-an-led-game-shield-for-your-arduino-or-d</a>. Please <a href="https://github.com/tedder/digipixel-creator">edit this code</a> to add instructions, make the display pretty, clean the code up, or anything else desired! You can also <a href="http://twitter.com/tedder42">reach me on twitter</a>.</p>
+
+  <input type="file">
+<br />
+<input type="text" name="label_name" value="Face" />
+<br />
+<br />
+<br />
+<textarea id="res" rows=12 cols=40></textarea>
+<br clear="all" />
+
+<!-- if this is made 0x0 px the code doesn't work :( -->
+<canvas id="cvs" height=1000 width=1000></canvas>
+  
+</body>
+
+
+</html>
+
+
