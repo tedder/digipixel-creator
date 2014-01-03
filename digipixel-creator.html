@@ -107,18 +107,18 @@ function test_barrier(r, g, b) {
                 if (height == 32) vartype = "long";
 
 
-                output += "byte " + varlabel + "Red[" + width + "]PROGMEM={\n  " + red.map(function (x) {
+                output += vartype + " " + varlabel + "Red[" + width + "]PROGMEM={\n  " + red.map(function (x) {
                     return "0b" + x;
                 }).join(",\n  ") + "};\n";
 
-                output += "byte " + varlabel + "Green[" + width + "]PROGMEM={\n  " + green.map(function (x) {
+                output += vartype + " " + varlabel + "Green[" + width + "]PROGMEM={\n  " + green.map(function (x) {
                     return "0b" + x;
                 }).join(",\n  ") + "};\n";
 
-                output += "byte " + varlabel + "Blue[" + width + "]PROGMEM={\n  " + blue.map(function (x) {
+                output += vartype + " " + varlabel + "Blue[" + width + "]PROGMEM={\n  " + blue.map(function (x) {
                     return "0b" + x;
                 }).join(",\n  ") + "};\n";
-                output += "byte " + varlabel + "Barrier[" + width + "]PROGMEM={\n  " + barrier.map(function (x) {
+                output += vartype + " " + varlabel + "Barrier[" + width + "]PROGMEM={\n  " + barrier.map(function (x) {
                     return "0b" + x;
                 }).join(",\n  ") + "};\n";
 
@@ -152,7 +152,7 @@ $('input').change(run_foo);
 <canvas id="cvs" height=1000 width=1000></canvas>
 <br />
 
-version: 1.2.2</br>
+version: 1.2.3</br>
   
 </body>
 
