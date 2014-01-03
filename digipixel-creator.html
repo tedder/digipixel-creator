@@ -5,8 +5,6 @@
   <title>digipixel creator</title>
   
   <script type='text/javascript' src='//code.jquery.com/jquery-2.0.2.js'></script>
-  <link rel="stylesheet" type="text/css" href="/css/normalize.css">
-  <link rel="stylesheet" type="text/css" href="/css/result-light.css">
   <style type='text/css'>
   </style>
   
@@ -104,6 +102,7 @@ function test_barrier(r, g, b) {
                 var varlabel = document.getElementsByName("label_name")[0].value;
 
                 height = this.height;
+                width = this.width;
                 if (height == 16) vartype = "word";
                 if (height == 32) vartype = "long";
 
@@ -151,6 +150,9 @@ $('input').change(run_foo);
 
 <!-- if this is made 0x0 px the code doesn't work :( -->
 <canvas id="cvs" height=1000 width=1000></canvas>
+<br />
+
+version: 1.2.2</br>
   
 </body>
 
