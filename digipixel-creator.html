@@ -4,7 +4,11 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <title>digipixel creator</title>
   
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.0.1-p7/css/bootstrap.min.css" rel="stylesheet">
+  
   <script type='text/javascript' src='//code.jquery.com/jquery-2.0.2.js'></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.0.1-p7/js/bootstrap.min.js"></script> 
   <style type='text/css'>
   </style>
   
@@ -130,33 +134,51 @@ function test_barrier(r, g, b) {
     }
 
 $('input').change(run_foo);
-});//]]>  
+});//]]> 
 
 </script>
 
+<style type="text/css">
+	.alert a {
+		text-decoration: underline
+	}
+</style>
 
 </head>
-<body>
-<p>Bitmap creator for Brad's Digipixel Kickstarter project by Tedder; see <a href="http://www.bradsprojects.com/the-digipixel/">www.bradsprojects.com/the-digipixel/</a> and <a href="http://www.kickstarter.com/projects/1897710270/digipixel-an-led-game-shield-for-your-arduino-or-d">www.kickstarter.com/projects/1897710270/digipixel-an-led-game-shield-for-your-arduino-or-d</a>. Please <a href="https://github.com/tedder/digipixel-creator">edit this code</a> to add instructions, make the display pretty, clean the code up, or anything else desired! You can also <a href="http://twitter.com/tedder42">reach me on twitter</a>.</p>
-
-  <input type="file">
-<br />
-<input type="text" name="label_name" value="Face" />
-<br />
-<br />
-<br />
-<textarea id="res" rows=12 cols=40></textarea>
-<br clear="all" />
-
-<!-- if this is made 0x0 px the code doesn't work :( -->
-<canvas id="cvs" height=1000 width=1000></canvas>
-<br />
-
-version: 1.2.3</br>
-  
-</body>
+  <body>
+    <div class="container">
+	  <div class="page-header">
+	    <h1>Bitmap Creator<small> for Brad's Digipixel Kickstarter project by Tedder</small></h1>
+	  </div>
+	  
+	  <div class="alert alert-info">
+	    <p>See <a href="http://www.bradsprojects.com/the-digipixel/">www.bradsprojects.com/the-digipixel/</a> and <a href="http://www.kickstarter.com/projects/1897710270/digipixel-an-led-game-shield-for-your-arduino-or-d">www.kickstarter.com/projects/1897710270/digipixel-an-led-game-shield-for-your-arduino-or-d</a>. Please <a href="https://github.com/tedder/digipixel-creator">edit this code</a> to add instructions, make the display pretty, clean the code up, or anything else desired! You can also <a href="http://twitter.com/tedder42">reach me on twitter</a>.</p>
+	  </div>
+	  
+	  <div class="fileinput fileinput-new" data-provides="fileinput">
+	    <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 400px; height: 150px;"></div>
+	    <div>
+	  	  <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Select another image</span><input type="file" name="..."></span>
+	  </div>
+	  </div>
 
 
+      <input style="position-relative; margin-left: -1500px" type="file"> <!-- required for script -->
+	  
+      <br />
+      <input type="text" class="form-control" placeholder="Name it..." name="label_name" value="" />
+      <br />
+      <textarea id="res" class="form-control" placeholder="Data appears here..." rows=12 cols=40></textarea>
+	  
+	  <br clear="all" />
+
+      <!-- if this is made 0x0 px the code doesn't work :( -->
+      <canvas id="cvs" height=1000 width=1000 style="position-relative; margin-left: -1500px;"></canvas> <!-- Push it off screen -->
+      <br />
+
+      version: 1.2.3</br>
+    </div>   
+  </body>
 </html>
 
 
